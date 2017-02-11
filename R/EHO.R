@@ -1,3 +1,5 @@
+## This is a comment
+
 EHO<- function(data, fixed=c(FALSE,FALSE,FALSE,FALSE,FALSE)){
   params<-fixed
   function(p){

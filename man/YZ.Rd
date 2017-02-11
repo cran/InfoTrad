@@ -33,30 +33,35 @@ Y. Yan and S. Zhang. An improved estimation method and empirical properties of t
 
 \examples{ 
   # Sample Data
-  #    Buy    Sell
-  # 1  350    382
-  # 2  150    500
-  # 3  500    463
-  # 4  552    550
-  # 5  163    200
+  #   Buy Sell 
+  #1  350  382  
+  #2  250  500  
+  #3  500  463  
+  #4  552  550  
+  #5  163  200  
+  #6  345  323  
+  #7  847  456  
+  #8  923  342  
+  #9  123  578  
+  #10 349  455   
   
-  Buy=c(350,150,500,552,163)
-  Sell=c(382,500,463,550,200)
-  data=cbind(Buy,Sell)
+  Buy<-c(350,250,500,552,163,345,847,923,123,349)
+  Sell<-c(382,500,463,550,200,323,456,342,578,455)
+  data<-cbind(Buy,Sell)
   
   # Parameter estimates using the LK factorization of Lin and Ke (2011) 
   # with the algorithm of Yan and Zhang (2012).
   # Default factorization is set to be "LK"
   
   YZ(data)
-  #          alpha        delta      mu   epsilon_b epsilon_s  LikVal      PIN
-  # Output 0.5876696 0.0005934669 309.688  156.3483  420.2923  19035.72 0.239897
+  #            alpha     delta       mu epsilon_b epsilon_s   Likval      PIN
+  # Output 0.3526071 0.8937947 438.1156   265.124  425.0304 44371.29 0.180108
   
   # Parameter estimates using the EHO factorization of Easley et. al. (2010) 
   # with the algorithm of Yan and Zhang (2012).
   
   YZ(data,likelihood="EHO")
-  #            alpha     delta     mu    epsilon_b epsilon_s   LikVal      PIN
-  # Output 0.4156183 0.5079664 355.9734  268.2996   261.455  23091.94 0.2183094
+#           alpha        delta       mu epsilon_b epsilon_s   Likval      PIN
+# Output 0.3605192 5.086071e-05 499.3587   402.306   402.306 53275.94 0.166432
 }
 

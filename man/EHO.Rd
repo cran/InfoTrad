@@ -18,63 +18,67 @@ Easley, D., Hvidkjaer, S., & O'Hara, M. Factoring information into returns. Jour
 \author{Duygu Celik and Murat Tinic}
 
 \examples{
+  # Sample Data
+  #   Buy Sell 
+  #1  350  382  
+  #2  250  500  
+  #3  500  463  
+  #4  552  550  
+  #5  163  200  
+  #6  345  323  
+  #7  847  456  
+  #8  923  342  
+  #9  123  578  
+  #10 349  455 
+  
+  Buy<-c(350,250,500,552,163,345,847,923,123,349)
+  Sell<-c(382,500,463,550,200,323,456,342,578,455)
+  data=cbind(Buy,Sell)
 
-# Sample Data
-#    Buy    Sell
-# 1  350    382
-# 2  150    500
-# 3  500    463
-# 4  552    550
-# 5  163    200
+  # Initial parameter values
+  # par0 = (alpha, delta, mu, epsilon_b, epsilon_s)
+  par0 = c(0.5,0.5,300,400,500)
 
-Buy=c(350,150,500,552,163)
-Sell=c(382,500,463,550,200)
-data=cbind(Buy,Sell)
+  # Call EHO function
+  LK_out = EHO(data)
+  model = optim(par0, LK_out, gr = NULL, method = c("Nelder-Mead"), hessian = FALSE)
 
-# Initial parameter values
-# par0 = (alpha, delta, mu, epsilon_b, epsilon_s)
-par0 = c(0.5,0.5,300,400,500)
+  # The structure of the model output
+  model
+  
+  # $par
+  # [1] 9.111102e-01 1.231429e-04 4.171497e+02 3.360750e+02 4.662539e+02
 
-# Call EHO function
-LK_out = EHO(data)
-model = optim(par0, LK_out, gr = NULL, method = c("Nelder-Mead"), hessian = FALSE)
+  # $value
+  # [1] -52831.29
 
-# The structure of the model output
+  # $counts
+  # function gradient 
+  #     502       NA 
 
-model
-# $par
-# [1] 3.041745e-01 7.608298e-03 4.129369e+02 3.032937e+02 5.261066e+02
+  # $convergence
+  # [1] 1
 
-# $value
-# [1] -22755.78
+  # $message
+  # NULL
+  ##
 
-# $counts
-# function gradient 
-# 502       NA 
-
-# $convergence
-# [1] 1
-
-# $message
-# NULL
-##
-
-## Parameter Estimates
-model$par[1] # Estimate for alpha
-# [1] 0.3041745
-model$par[2] # Estimate for delta
-#[1] 0.007608298
-model$par[3] # Estimate for mu
-# [1] 412.9369
-model$par[4] # Estimate for eb
-# [1] 303.2937
-model$par[5] # Estimate for es
-# [1] 526.1066
-
-## Estimate for PIN
-(model$par[1]*model$par[3])/((model$par[1]*model$par[3])+model$par[4]+model$par[5])
-# [1] 0.1315227
-####
+  ## Parameter Estimates
+  model$par[1] # Estimate for alpha
+  # [1] 0.9111102
+  model$par[2] # Estimate for delta
+  #[1] 0.0001231429
+  model$par[3] # Estimate for mu
+  # [1] 417.1497
+  model$par[4] # Estimate for eb
+  # [1] 336.075
+  model$par[5] # Estimate for es
+  # [1] 466.2539
+  
+  ## Estimate for PIN
+  (model$par[1]*model$par[3])/((model$par[1]*model$par[3])+model$par[4]+model$par[5])
+  # [1] 0.3214394
+  ####
 
 }
 

@@ -20,15 +20,20 @@ Lin, H.W.W. and Ke, W.C. A computing bias in estimating the probability of infor
 \author{Duygu Celik and Murat Tinic}
 \examples{
   # Sample Data
-  #    Buy    Sell
-  # 1  350    382
-  # 2  150    500
-  # 3  500    463
-  # 4  552    550
-  # 5  163    200
+  #   Buy Sell 
+  #1  350  382  
+  #2  250  500  
+  #3  500  463  
+  #4  552  550  
+  #5  163  200  
+  #6  345  323  
+  #7  847  456  
+  #8  923  342  
+  #9  123  578  
+  #10 349  455 
   
-  Buy=c(350,150,500,552,163)
-  Sell=c(382,500,463,550,200)
+  Buy<-c(350,250,500,552,163,345,847,923,123,349)
+  Sell<-c(382,500,463,550,200,323,456,342,578,455)
   data=cbind(Buy,Sell)
   
   # Initial parameter values
@@ -42,37 +47,37 @@ Lin, H.W.W. and Ke, W.C. A computing bias in estimating the probability of infor
   ## The structure of the model output ##
   model
   
-  # $par
-  # [1] 6.339028e-01 3.358580e-06 4.302504e+02 1.348861e+02 4.343046e+02
-  # $value
-  # [1] -19004.07
-  
-  # $counts
-  # function gradient 
-  # 392       NA 
-  
-  # $convergence
-  # [1] 0
-  
-  # $message
-  # NULL
-  ##
+  #$par
+  #[1]   0.480277   0.830850 315.259805 296.862318 400.490830
+
+  #$value
+  #[1] -44343.21
+
+  #$counts
+  #function gradient 
+  #    502       NA 
+
+  #$convergence
+  #[1] 1
+
+  #$message
+  #NULL
   
   ## Parameter Estimates
   model$par[1] # Estimate for alpha
-  # [1] 0.6339028
+  # [1] 0.480277
   model$par[2] # Estimate for delta
-  # [1] 3.35858e-06
+  # [1] 0.830850
   model$par[3] # Estimate for mu
-  # [1] 430.2504
+  # [1] 315.259805
   model$par[4] # Estimate for eb
-  # [1] 134.8861
+  # [1] 296.862318
   model$par[5] # Estimate for es
   # [1] 434.3046
   
   ## Estimate for PIN 
   (model$par[1]*model$par[3])/((model$par[1]*model$par[3])+model$par[4]+model$par[5])
-  # [1] 0.3239435
+  # [1] 0.178391
   ####
 }
 

@@ -6,6 +6,10 @@ YZ<-function(data, likelihood=c("LK","EHO")){
   #Separating buy values from sell values  
   Bt<-data[,1]
   St<-data[,2]
+
+  #Replace NA's with zero to allow the existence of zero order days.
+  Bt[is.na(Bt)]=0
+  St[is.na(St)]=0
   
   #Defining variables for the mean buy and sell orders and the max amount of order
   mean_b=mean(Bt)
@@ -90,10 +94,10 @@ YZ<-function(data, likelihood=c("LK","EHO")){
   fin_output[6]=output_s[nrow(output_s),6] #Fval
   
   #Calculates the probability of informed trading 
-  fin_output[7]=(fin_output[1]*fin_output[3])/((fin_output[1]*fin_output[3])+fin_output[4]+fin_output[5])
+  fin_output[7]=(fin_output[1]*fin_output[3])/((fin_output[1]*fin_output[3])+fin_output[3]+fin_output[4])
   
   # Naming the columns and rows
-  colnames(fin_output)<-c("alpha", "delta", "mu", "epsilon_b", "epsilon_s", "LikVal", "PIN")
+  colnames(fin_output)<-c("alpha", "delta", "mu", "epsilon_b", "epsilon_s", "Likval", "PIN")
   rownames(fin_output)<-c("Output")
   return(fin_output)
 }

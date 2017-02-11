@@ -1,23 +1,28 @@
-GAN<- function(data, likelihood=c("LK", "EHO")){ 
-  
+EA<- function(data, likelihood=c("LK", "EHO")){ 
   data = as.data.frame(data)
   
   choice <- match.arg(likelihood)
   
   colnames(data)<-c('Buy', 'Sell')
   
-  imbalance = data[,'Buy'] - data[,'Sell']
-  data["Imbalance"] = imbalance
+  # Imbalance with sign
+  sign_imbalance = data[,'Buy'] - data[,'Sell']
+  data["sign_Imbalance"] = sign_imbalance
+  
+  # Absolute Imbalance
+  abs_imbalance = abs(data[,'Buy'] - data[,'Sell'])
+  data["abs_Imbalance"] = abs_imbalance
   
   # Complete linkage clustering
-  clusters = hclust(dist(data[, "Imbalance"]))
-  clusterCut = cutree(clusters, 3)
+  clusters = hclust(dist(data[, "abs_Imbalance"]))
+  # Divide to Event-No Event Clusters
+  clusterCut = cutree(clusters, 2)
   data["Cluster"] = clusterCut
   
   t = table(clusterCut, data$Cluster)
   
   # Calculate the means of clusters
-  f_clus = t['1',]
+  f_clus = t['1',] 
   f_clus = t['1',][which(f_clus > 0)]
   f_mean = mean(strtoi(names(f_clus)))
   
@@ -25,29 +30,30 @@ GAN<- function(data, likelihood=c("LK", "EHO")){
   s_clus = t['2',][which(s_clus > 0)]
   s_mean = mean(strtoi(names(s_clus)))
   
-  t_clus = t['3',]
-  t_clus = t['3',][which(t_clus > 0)]
-  t_mean = mean(strtoi(names(t_clus)))
-  
   # Assign clustering
-  means = c(f_mean, s_mean, t_mean)
-  good = which(means==max(means))
-  bad = which(means==min(means))
-  no = which((means > min(means)) & (means < max(means)))
+  means = c(f_mean, s_mean)
+  event = which(means==max(means))
+  no_event = which(means==min(means))
+  
+  # Discard no event rows from data
+  event_data = data[data$Cluster==event,]
+  # Cluster Event cluster into good-bad event with sign_imbalance
+  clusters_E = hclust(dist(event_data[, "sign_Imbalance"]))
+  clusterCut_E = cutree(clusters_E, 2, h=0)
+  event_data["BadGood_Cluster"] = clusterCut_E
   
   # Calculate the mean of Buy and Sell Orders with respect to their clusters 
-  bad_buy_mean = mean(data[data$Cluster==bad,"Buy"])
-  good_buy_mean =mean(data[data$Cluster==good,"Buy"])
-  no_buy_mean= mean(data[data$Cluster==no,"Buy"])
-  
-  bad_sell_mean = mean(data[data$Cluster==bad,"Sell"])
-  good_sell_mean =mean(data[data$Cluster==good,"Sell"])
-  no_sell_mean= mean(data[data$Cluster==no,"Sell"])
+  bad_buy_mean = mean(event_data[event_data$BadGood_Cluster==1,"Buy"])
+  good_buy_mean =mean(event_data[event_data$BadGood_Cluster==2,"Buy"])
+  no_buy_mean = mean(data[data$Cluster==no_event,"Buy"])
+  bad_sell_mean = mean(event_data[event_data$BadGood_Cluster==1,"Sell"])
+  good_sell_mean =mean(event_data[event_data$BadGood_Cluster==2,"Sell"])
+  no_sell_mean = mean(data[data$Cluster==no_event,"Sell"])
   
   # Count the number of bad,good, no news
-  n_b = length(which(data$Cluster == bad))
-  n_g = length(which(data$Cluster == good))
-  n_n = length(which(data$Cluster == no))
+  n_b = length(which(data$Cluster == no_event))
+  n_g = length(which(event_data$BadGood_Cluster == 2))
+  n_n = length(which(event_data$BadGood_Cluster == 1))
   
   # Weight
   w_b = n_b/(n_b+n_g+n_n)
@@ -59,15 +65,17 @@ GAN<- function(data, likelihood=c("LK", "EHO")){
   delta_h = w_b/alpha_h
   e_b = (w_b/(w_b+w_n))*(bad_buy_mean) + (w_n/(w_b+w_n))*(no_buy_mean)
   e_s = (w_g/(w_g+w_n))*(good_sell_mean) + (w_n/(w_g+w_n))*(no_sell_mean)
+  
   mu_b = good_buy_mean - e_b
   if (mu_b<0){
     mu_b=0
   }
-
+  
   mu_s = bad_sell_mean - e_s
   if (mu_s<0){
     mu_s=0
   }
+  
   mu = (w_g/(w_b+w_g))*mu_b + (w_b/(w_b+w_g))*mu_s
   
   par0 = c(alpha_h,delta_h,mu,e_b, e_s)
