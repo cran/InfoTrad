@@ -1,15 +1,15 @@
 \name{YZ}
 \alias{YZ}
-\title{
-Yan and Zhang (2012) Grid-Search based PIN Estimates
-}
+\alias{print.YZ_class}
+\alias{YZ_class}
+\title{Yan and Zhang (2012) Grid-Search based PIN Estimates}
 \description{It estimates PIN using Yan and Zhang (2012) algorithm.}
-\usage{
-YZ(data, likelihood = c("LK", "EHO"))
-}
+\usage{YZ(data, likelihood = c("LK", "EHO"))
+\method{print}{YZ_class}(obj)}
 \arguments{
   \item{data}{Data frame with 2 variables}
 	\item{likelihood}{Character strings for likelihood algorithm. Default is "LK".}
+	\item{obj}{object variable}
 }
 \details{Argument for data must be a data frame with 2 columns that only contain numbers. Not any other type. You do not have to give names to the columns. We will assign first one as "Buy" and second as "Sell", therefore you should put order numbers with respect to this order.}
 
@@ -53,15 +53,30 @@ Y. Yan and S. Zhang. An improved estimation method and empirical properties of t
   # with the algorithm of Yan and Zhang (2012).
   # Default factorization is set to be "LK"
   
-  YZ(data)
-  #            alpha     delta       mu epsilon_b epsilon_s   Likval      PIN
-  # Output 0.3526071 0.8937947 438.1156   265.124  425.0304 44371.29 0.180108
+  result=YZ(data)
+  print(result)
+  
+  # Alpha: 0.3999999 
+  # Delta: 0 
+  # Mu: 442.1667 
+  # Epsilon_b: 263.3333 
+  # Epsilon_s: 424.9 
+  # Likelihood Value: 44371.84 
+  # PIN: 0.2004457 
   
   # Parameter estimates using the EHO factorization of Easley et. al. (2010) 
   # with the algorithm of Yan and Zhang (2012).
   
-  YZ(data,likelihood="EHO")
-#           alpha        delta       mu epsilon_b epsilon_s   Likval      PIN
-# Output 0.3605192 5.086071e-05 499.3587   402.306   402.306 53275.94 0.166432
+  result=YZ(data,likelihood="EHO")
+  print(result)
+  
+  # Alpha: 0.9000001 
+  # Delta: 0.9000001 
+  # Mu: 489.1111 
+  # Epsilon_b: 396.1803 
+  # Epsilon_s: 28.72002 
+  # Likelihood Value: Inf 
+  # PIN: 0.3321033 
+
 }
 

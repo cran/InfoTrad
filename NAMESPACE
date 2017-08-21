@@ -1,2 +1,7 @@
 exportPattern("^[[:alpha:]]+")
- importFrom("stats", "cutree", "dist", "hclust", "optim")
+ S3method(print, EA_class)
+ S3method(print, GAN_class)
+ S3method(print, YZ_class)
+ import(nloptr)
+ importFrom(stats, cutree, dist, hclust)
+ importFrom(nloptr, neldermead)

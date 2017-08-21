@@ -1,5 +1,3 @@
-## This is a comment
-
 EHO<- function(data, fixed=c(FALSE,FALSE,FALSE,FALSE,FALSE)){
   params<-fixed
   function(p){
@@ -20,7 +18,7 @@ EHO<- function(data, fixed=c(FALSE,FALSE,FALSE,FALSE,FALSE)){
   epss <- params[5]; #e_s
   
   #Initialize
-  LK_I <- c(0);
+  LK_I=0;
   
   for (j in 1:trad_days){
     buy_s     <- B[j];
@@ -32,20 +30,16 @@ EHO<- function(data, fixed=c(FALSE,FALSE,FALSE,FALSE,FALSE)){
     Xb<- epsb/(mu+epsb)
       
     #Split the log-likelihood in two parts and compute the relevant terms
-    part1<- -(epsb+epss)+M*log(Xb+Xs)+buy_s*log(mu+epsb)+sell_s*log(mu+epss)
-    part2<- log(alpha*(1-delta)*exp(-mu)*Xs^(sell_s-M)*Xb^(-M)+alpha*delta*exp(-mu)*Xb^(buy_s-M)*Xs^(-M)+(1-alpha)*Xs^(sell_s-M)*Xb^(buy_s-M))
+    part1<- buy_s*log(mu+epsb)+sell_s*log(mu+epss)+M*log(Xb)+M*log(Xs)-(epsb+epss)
+    part2<- log(alpha*delta*exp(-mu)*Xb^(buy_s-M)*Xs^(-M)+alpha*(1-delta)*exp(-mu)*Xb^(-M)*Xs^(sell_s-M)+(1-alpha)*Xb^(buy_s-M)*Xs^(sell_s-M))
     
+    if (is.nan(part2)){
+      part2=0
+    }
     LK_I <- LK_I + (part1+part2)
   
   }   
-  
-  if ((epsb>=0) && (epss>=0) && (mu>=0) && (alpha>=0) && (delta>=0) &&  (alpha<=1) && (delta<=1)){
-    LK_out <- -LK_I;
-  }else{
-    LK_out <- -Inf;
-  }
-  
-  return(LK_out)
+  return(-LK_I)
   }
 }
   

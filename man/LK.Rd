@@ -44,25 +44,6 @@ Lin, H.W.W. and Ke, W.C. A computing bias in estimating the probability of infor
   LK_out = LK(data)
   model = optim(par0, LK_out, gr = NULL, method = c("Nelder-Mead"), hessian = FALSE)
   
-  ## The structure of the model output ##
-  model
-  
-  #$par
-  #[1]   0.480277   0.830850 315.259805 296.862318 400.490830
-
-  #$value
-  #[1] -44343.21
-
-  #$counts
-  #function gradient 
-  #    502       NA 
-
-  #$convergence
-  #[1] 1
-
-  #$message
-  #NULL
-  
   ## Parameter Estimates
   model$par[1] # Estimate for alpha
   # [1] 0.480277

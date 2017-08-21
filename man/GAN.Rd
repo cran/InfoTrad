@@ -1,11 +1,15 @@
 \name{GAN}
 \alias{GAN}
+\alias{print.GAN_class}
+\alias{GAN_class}
 \title{GAN et al.(2015) Clustering based PIN Estimates}
 \description{It estimates PIN using hierarchical agglomertaive clustering.}
-\usage{GAN(data, likelihood = c("LK", "EHO"))}
+\usage{GAN(data, likelihood = c("LK", "EHO"))
+\method{print}{GAN_class}(obj)}
 \arguments{
 	\item{data}{Data frame with 2 variables}
 	\item{likelihood}{Character strings for likelihood algorithm. Default is "LK".}
+	\item{obj}{object variable}
 }
 \details{Argument for data must be a data frame with 2 columns that only contain numbers. Not any other type. You do not have to give names to the columns. We will assign first one as "Buy" and second as "Sell", therefore you should put order numbers with respect to this order. This package uses the hclust() function of Mullner (2013) to cluster the data at default settings.}
 
@@ -49,16 +53,31 @@ Gan, Q., Wei, W. C., & Johnstone, D. A faster estimation method for the probabil
   # with the algorithm of Gan et. al. (2015).
   # Default factorization is set to be "LK"
   
-  GAN(data)
-#            alpha     delta       mu epsilon_b epsilon_s  LikVal       PIN
-# Output 0.3978912 0.9998532 435.8395  259.0336   420.786 44371.1 0.2032458
+  result=GAN(data)
+  print(result)
+  
+  # Alpha: 0.3999998 
+  # Delta: 0 
+  # Mu: 442.1667 
+  # Epsilon_b: 263.3333 
+  # Epsilon_s: 424.9 
+  # Likelihood Value: 44371.84 
+  # PIN: 0.2044464 
   
   # Parameter estimates using the EHO factorization of Easley et. al. (2010) 
   # with the algorithm of Gan et. al. (2015)
   
-  GAN(data, likelihood="EHO")
-#             alpha    delta       mu epsilon_b epsilon_s   LikVal       PIN
-# Output 0.6659866 0.4193557 319.0172  257.0148  359.9236 52826.15 0.2561626
+  result=GAN(data, likelihood="EHO")
+  print(result)
+  
+  # Alpha: 0.3230001 
+  # Delta: 0.4780001 
+  # Mu: 481.3526 
+  # Epsilon_b: 356.6359 
+  # Epsilon_s: 313.136 
+  # Likelihood Value: Inf 
+  # PIN: 0.1884001 
+
 
 }
 

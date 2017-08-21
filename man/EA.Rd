@@ -1,15 +1,16 @@
 \name{EA}
 \alias{EA}
-\title{
-Ersan and Alici (2016) Cluster analysis with the altered steps.
-}
+\alias{print.EA_class}
+\alias{EA_class}
+\alias{print}
+\title{Ersan and Alici (2016) Cluster analysis with the altered steps.}
 \description{It estimates PIN using Ersan and Alici (2016) modified clustering algorithm.}
-\usage{
-EA(data, likelihood = c("LK", "EHO"))
-}
+\usage{EA(data, likelihood = c("LK", "EHO"))
+\method{print}{EA_class}(obj)}
 \arguments{
   \item{data}{Data frame with 2 variables}
 	\item{likelihood}{Character strings for likelihood algorithm. Default is "LK".}
+	\item{obj}{object variable}
 }
 \details{Argument for data must be a data frame with 2 columns that only contain numbers. Not any other type. You do not have to give names to the columns. We will assign first one as "Buy" and second as "Sell", therefore you should put order numbers with respect to this order.}
 
@@ -53,15 +54,30 @@ Ersan, Oguz, and Asli Alici . "An unbiased computation methodology for estimatin
   # with the modified clustering algorithm of Ersan and Alici (2016).
   # Default factorization is set to be "LK"
   
-  EA(data)
-  #           alpha     delta       mu epsilon_b epsilon_s   LikVal        PIN
-  #Output 0.1297379 0.9982431 509.7636   413.941  401.0135 44240.17 0.07506118
+  result=EA(data)
+  print(result)
+  
+  # Alpha: 0.9511418 
+  # Delta: 0.2694005 
+  # Mu: 76.7224 
+  # Epsilon_b: 493.7045 
+  # Epsilon_s: 377.4877 
+  # Likelihood Value: 43973.71 
+  # PIN: 0.07728924 
+  
   
   # Parameter estimates using the EHO factorization of Easley et. al. (2010) 
   # with the modified clustering algorithm of Ersan and Alici (2016).
   
-  EA(data,likelihood="EHO")
-  #           alpha     delta       mu epsilon_b epsilon_s   LikVal       PIN
-  #Output 0.7576503 0.1047257 383.1325   308.831  549.5443 52430.75 0.2527132
+  result=EA(data,likelihood="EHO")
+  print(result)
+  
+  # Alpha: 0.9511418 
+  # Delta: 0.2694005 
+  # Mu: 76.7224 
+  # Epsilon_b: 493.7045 
+  # Epsilon_s: 377.4877 
+  # Likelihood Value: 43973.71 
+  # PIN: 0.07728924 
 }
 

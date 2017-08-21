@@ -40,28 +40,8 @@ Easley, D., Hvidkjaer, S., & O'Hara, M. Factoring information into returns. Jour
   par0 = c(0.5,0.5,300,400,500)
 
   # Call EHO function
-  LK_out = EHO(data)
-  model = optim(par0, LK_out, gr = NULL, method = c("Nelder-Mead"), hessian = FALSE)
-
-  # The structure of the model output
-  model
-  
-  # $par
-  # [1] 9.111102e-01 1.231429e-04 4.171497e+02 3.360750e+02 4.662539e+02
-
-  # $value
-  # [1] -52831.29
-
-  # $counts
-  # function gradient 
-  #     502       NA 
-
-  # $convergence
-  # [1] 1
-
-  # $message
-  # NULL
-  ##
+  EHO_out = EHO(data)
+  model = optim(par0, EHO_out, gr = NULL, method = c("Nelder-Mead"), hessian = FALSE)
 
   ## Parameter Estimates
   model$par[1] # Estimate for alpha
